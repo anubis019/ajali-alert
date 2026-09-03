@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ajali Alert Admin</title>
+  <style>
+    :root {
+      --bg: #0f1720;
+      --panel: #16212c;
+      --panel-2: #1d2a35;
+      --line: #2a3946;
+      --text: #edf3f8;
+      --muted: #9aa8b5;
+      --green: #39b08f;
+      --amber: #e0a73b;
+      --red: #e3535a;
+      --blue: #72a9ff;
+      --shadow: 0 14px 30px rgba(0,0,0,.25);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      background: linear-gradient(180deg, #0c131a, #111b25 35%, #15212d);
+      color: var(--text);
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 28px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(13,22,30,0.7);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .brand-mark {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--red), #ff7b7b);
+      display: grid; place-items: center;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+    .nav a {
+      color: var(--muted);
+      margin-left: 18px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .nav a.active { color: var(--text); }
+    .shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+    }
+    h1 {
+      margin: 0 0 18px;
+      font-size: clamp(28px, 4vw, 40px);
+      letter-spacing: -0.04em;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 20px 0 28px;
+    }
+    .stat {
+      background: rgba(22,33,44,0.95);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+    .content {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 20px;
+    }
+    .panel {
+      background: rgba(22,33,44,0.95);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .panel h2 {
+      margin: 0 0 18px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .NEW, .DISPATCHING, .EN_ROUTE { background: rgba(114,169,255,0.14); color: #9dc0ff; }
+    .ESCALATED { background: rgba(224,167,59,0.14); color: #f0c76a; }
+    .ARRIVED, .RESOLVED { background: rgba(57,176,143,0.14); color: #7edbb7; }
+    .CLOSED, .CANCELLED, .FALSE_ALERT { background: rgba(159,168,177,0.18); color: #d9e0e7; }
+    .muted { color: var(--muted); }
+    .list {
+      display: grid;
+      gap: 12px;
+    }
+    .mini-card {
+      border: 1px solid var(--line);
+      background: rgba(29,42,53,0.9);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .mini-card strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    .mini-meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, #e3535a, #ef6f75); color: #fff; }
+    .btn-secondary { background: #1c2d39; color: var(--text); border: 1px solid var(--line); }
+    .stack { display: grid; gap: 14px; }
+    .inline-actions { display: flex; gap: 8px; margin-top: 10px; }
+    .chat-box {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .chat-thread {
+      min-height: 150px;
+      max-height: 250px;
+      overflow: auto;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(10, 17, 22, 0.48);
+      border: 1px solid var(--line);
+      display: grid;
+      gap: 8px;
+    }
+    .msg {
+      max-width: 88%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .msg.user {
+      justify-self: end;
+      background: rgba(114, 169, 255, 0.14);
+      border: 1px solid rgba(114, 169, 255, 0.4);
+    }
+    .msg.ai {
+      justify-self: start;
+      background: rgba(57, 176, 143, 0.12);
+      border: 1px solid rgba(57, 176, 143, 0.45);
+    }
+    .chat-input-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+    .chat-input-row input {
+      width: 100%;
+      background: rgba(13, 19, 24, 0.85);
+      border: 1px solid var(--line);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+    }
+    .responder-panel {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .responder-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(29, 42, 53, 0.9);
+      padding: 12px 14px;
+      display: grid;
+      gap: 5px;
+      cursor: pointer;
+      transition: border-color 0.15s ease;
+    }
+    .responder-card:hover {
+      border-color: rgba(114, 169, 255, 0.7);
+    }
+    .responder-card.selected {
+      border-color: rgba(57, 176, 143, 0.7);
+      box-shadow: inset 0 0 0 1px rgba(57, 176, 143, 0.2);
+    }
+    .responder-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+    .responder-meta { color: var(--muted); font-size: 12px; }
+    .incident-drawer {
+      position: fixed;
+      right: 24px;
+      top: 92px;
+      width: min(380px, calc(100vw - 32px));
+      background: rgba(22, 33, 44, 0.98);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      display: none;
+      z-index: 20;
+    }
+    .incident-drawer.visible { display: block; }
+    .drawer-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .drawer-close {
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+    .drawer-grid {
+      display: grid;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .drawer-grid strong { color: var(--text); }
+    @media (max-width: 900px) {
+      .content { grid-template-columns: 1fr; }
+      .incident-drawer { right: 16px; left: 16px; width: auto; top: auto; bottom: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">AL</div>
+      <span>Ajali Alert Admin</span>
+    </div>
+    <nav class="nav">
+      <a href="admin.html" class="active">Dashboard</a>
+      <a href="index.html">Citizen App</a>
+    </nav>
+  </header>
+
+  <div class="incident-drawer" id="incident-drawer">
+    <div class="drawer-head">
+      <h2 style="margin:0; font-size:18px;">Incident detail</h2>
+      <button class="drawer-close" id="drawer-close">Close</button>
+    </div>
+    <div class="drawer-grid" id="incident-drawer-content"></div>
+  </div>
+
+  <div class="shell">
+    <h1>Operations overview</h1>
+
+    <section class="stats" id="stats"></section>
+
+    <section class="content">
+      <div class="panel">
+        <h2>Live incidents</h2>
+        <div style="overflow:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Location</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody id="incident-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="panel">
+          <h2>Recent activity</h2>
+          <div class="list" id="recent-activity"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Dispatcher actions</h2>
+          <div class="inline-actions">
+            <button class="btn btn-primary" id="refresh-btn">Refresh</button>
+            <button class="btn btn-secondary" id="open-citizen-btn">Citizen view</button>
+          </div>
+          <div class="chat-box">
+            <div class="chat-thread" id="chat-thread"></div>
+            <div class="chat-input-row">
+              <input id="assistant-input" type="text" placeholder="Ask about incident status, priority, or safety guidance" />
+              <button class="btn btn-primary" id="assistant-send">Send</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Responder detail</h2>
+          <div class="responder-panel" id="responder-panel"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const API = 'http://localhost:8000';
+    const statsEl = document.getElementById('stats');
+    const tableBody = document.getElementById('incident-table-body');
+    const recentEl = document.getElementById('recent-activity');
+
+    function renderStats(summary) {
+      const cards = [
+        ['Total incidents', summary.total_incidents],
+        ['Active', summary.active_incidents],
+        ['Critical', summary.critical_incidents],
+        ['Available responders', summary.available_responders],
+      ];
+
+      statsEl.innerHTML = cards.map(([label, value]) => `
+        <div class="stat">
+          <div class="stat-label">${label}</div>
+          <div class="stat-value">${value}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderTable(incidents) {
+      if (!incidents.length) {
+        tableBody.innerHTML = '<tr><td colspan="5" class="muted">No incidents reported yet.</td></tr>';
+        return;
+      }
+
+      tableBody.innerHTML = incidents.map((incident) => `
+        <tr data-incident-id="${incident.id}" tabindex="0">
+          <td>${incident.incident_number}</td>
+          <td><span class="status-pill ${incident.status}">${incident.status.replace(/_/g, ' ')}</span></td>
+          <td>Level ${incident.priority}</td>
+          <td>${incident.location_description || 'Unspecified'}</td>
+          <td>${new Date(incident.created_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</td>
+        </tr>
+      `).join('');
+
+      tableBody.querySelectorAll('tr[data-incident-id]').forEach((row) => {
+        row.addEventListener('click', () => selectIncident(row.getAttribute('data-incident-id')));
+        row.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            selectIncident(row.getAttribute('data-incident-id'));
+          }
+        });
+      });
+    }
+
+    function renderRecent(items) {
+      if (!items.length) {
+        recentEl.innerHTML = '<div class="mini-card muted">No recent activity available.</div>';
+        return;
+      }
+
+      recentEl.innerHTML = items.map((item) => `
+        <div class="mini-card" data-incident-id="${item.id}" tabindex="0" role="button">
+          <strong>${item.incident_number}</strong>
+          <div class="mini-meta">${item.location_description || 'Unspecified'} · ${item.type || 'Other'}</div>
+          <div class="mini-meta">${new Date(item.created_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</div>
+          <div class="inline-actions">
+            <span class="status-pill ${item.status}">${item.status.replace(/_/g, ' ')}</span>
+          </div>
+        </div>
+      `).join('');
+
+      recentEl.querySelectorAll('[data-incident-id]').forEach((card) => {
+        card.addEventListener('click', () => selectIncident(card.getAttribute('data-incident-id')));
+        card.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            selectIncident(card.getAttribute('data-incident-id'));
+          }
+        });
+      });
+    }
+
+    function renderResponders(responders) {
+      const panel = document.getElementById('responder-panel');
+      if (!responders || !responders.length) {
+        panel.innerHTML = '<div class="mini-card muted">No responder records available.</div>';
+        return;
+      }
+
+      panel.innerHTML = responders.slice(0, 5).map((person) => `
+        <div class="responder-card ${person.id === window.selectedResponderId ? 'selected' : ''}" data-responder-id="${person.id}">
+          <div class="responder-top">
+            <strong>${person.name}</strong>
+            <span class="status-pill ${person.status}">${person.status}</span>
+          </div>
+          <div class="responder-meta">${person.responder_type} · ${person.phone || 'No phone on file'}</div>
+          <div class="responder-meta">Lat ${person.latitude.toFixed(4)} · Lon ${person.longitude.toFixed(4)}</div>
+        </div>
+      `).join('');
+
+      panel.querySelectorAll('[data-responder-id]').forEach((item) => {
+        item.addEventListener('click', () => {
+          window.selectedResponderId = item.getAttribute('data-responder-id');
+          renderResponders(responders);
+        });
+      });
+    }
+
+    function selectIncident(incidentId) {
+      if (!incidentId) return;
+      window.selectedIncidentId = incidentId;
+      document.querySelectorAll('#incident-table-body tr[data-incident-id]').forEach((row) => {
+        row.style.background = row.getAttribute('data-incident-id') === incidentId ? 'rgba(57, 176, 143, 0.08)' : 'transparent';
+      });
+      document.querySelectorAll('#recent-activity [data-incident-id]').forEach((card) => {
+        card.style.borderColor = card.getAttribute('data-incident-id') === incidentId ? 'rgba(57, 176, 143, 0.7)' : 'var(--line)';
+      });
+
+      fetch(`${API}/api/v1/incidents/${incidentId}`)
+        .then((res) => res.json())
+        .then((incident) => {
+          const panel = document.getElementById('incident-drawer');
+          const content = document.getElementById('incident-drawer-content');
+          const assignments = (incident.assignments || []).map((assignment) => {
+            const responder = assignment.responder || {};
+            return `<div><strong>Assigned responder:</strong> ${responder.name || 'Unknown'} (${responder.responder_type || 'unit'}) · ETA ${assignment.eta_minutes || 0} min</div>`;
+          }).join('') || '<div><strong>Assigned responder:</strong> None</div>';
+
+          content.innerHTML = `
+            <div><strong>Case:</strong> ${incident.incident_number}</div>
+            <div><strong>Status:</strong> ${incident.status}</div>
+            <div><strong>Priority:</strong> Level ${incident.priority}</div>
+            <div><strong>Type:</strong> ${incident.type ? incident.type.name : 'Unspecified'}</div>
+            <div><strong>Location:</strong> ${incident.location_description || 'Unspecified'}</div>
+            <div><strong>Description:</strong> ${incident.description || 'No description provided'}</div>
+            <div><strong>Casualties:</strong> ${incident.casualty_count || 0}</div>
+            ${assignments}
+            <div><strong>Last updated:</strong> ${new Date(incident.updated_at).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}</div>
+          `;
+          panel.classList.add('visible');
+        })
+        .catch(() => {
+          const panel = document.getElementById('incident-drawer');
+          document.getElementById('incident-drawer-content').innerHTML = '<div><strong>Incident detail:</strong> Could not load this incident.</div>';
+          panel.classList.add('visible');
+        });
+    }
+
+    async function loadDashboard() {
+      const res = await fetch(`${API}/api/v1/dashboard/summary`);
+      const summary = await res.json();
+      renderStats(summary);
+      renderRecent(summary.recent_incidents || []);
+      renderResponders(summary.responders_detail || []);
+
+      const incidentsRes = await fetch(`${API}/api/v1/incidents`);
+      const incidents = await incidentsRes.json();
+      renderTable(incidents);
+
+      if (window.selectedIncidentId) {
+        selectIncident(window.selectedIncidentId);
+      }
+    }
+
+    function appendChat(role, text) {
+      const thread = document.getElementById('chat-thread');
+      const el = document.createElement('div');
+      el.className = `msg ${role}`;
+      el.textContent = text;
+      thread.appendChild(el);
+      thread.scrollTop = thread.scrollHeight;
+    }
+
+    async function sendAssistantMessage() {
+      const input = document.getElementById('assistant-input');
+      const message = input.value.trim();
+      if (!message) return;
+
+      appendChat('user', message);
+      input.value = '';
+
+      try {
+        const incidentId = window.selectedIncidentId || document.querySelector('#incident-table-body tr[data-incident-id]')?.getAttribute('data-incident-id') || null;
+        const res = await fetch(`${API}/api/v1/assistant/chat`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, incident_id: incidentId, user_role: 'dispatcher' })
+        });
+        const result = await res.json();
+        appendChat('ai', result.reply || 'No reply generated.');
+      } catch (error) {
+        appendChat('ai', 'The assistant is offline right now. Please check the backend connection.');
+      }
+    }
+
+    document.getElementById('refresh-btn').addEventListener('click', loadDashboard);
+    document.getElementById('open-citizen-btn').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+    document.getElementById('assistant-send').addEventListener('click', sendAssistantMessage);
+    document.getElementById('assistant-input').addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') sendAssistantMessage();
+    });
+    document.getElementById('drawer-close').addEventListener('click', () => {
+      document.getElementById('incident-drawer').classList.remove('visible');
+    });
+
+    window.selectedIncidentId = null;
+    window.selectedResponderId = null;
+    appendChat('ai', 'I can help summarize the latest incident, check dispatcher status, or suggest immediate response guidance.');
+    loadDashboard();
+    setInterval(loadDashboard, 8000);
+  </script>
+</body>
+</html>
