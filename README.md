@@ -1,4 +1,4 @@
-# Ajali Alert (demo build)
+# Ajali Alert 
 
 A scoped-down, actually-runnable slice of the Ajali Alert spec: the backend
 API (incident reporting, nearest-responder dispatch, escalation, status
