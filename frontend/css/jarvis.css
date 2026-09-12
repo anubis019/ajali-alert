@@ -1,0 +1,430 @@
+/* === JARVIS PANEL === */
+.jarvis-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+}
+.jarvis-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 5%, var(--gold) 30%, var(--gold) 70%, transparent 95%);
+  opacity: 0.6;
+}
+
+.jarvis-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border);
+}
+.jarvis-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.jarvis-logo {
+  width: 32px; height: 32px;
+  background: var(--gold-dim);
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold);
+  position: relative;
+}
+.jarvis-logo::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  opacity: 0.3;
+  animation: jarvisGlow 2s infinite;
+}
+@keyframes jarvisGlow {
+  0%,100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.05); }
+}
+
+.jarvis-title {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--gold);
+}
+.jarvis-status {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  display: flex; align-items: center; gap: 6px;
+}
+.jarvis-status.online { color: var(--teal); }
+.jarvis-status .status-dot { width: 5px; height: 5px; }
+
+/* Tabs */
+.jarvis-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.jarvis-tab {
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.jarvis-tab:hover { color: var(--text-muted); }
+.jarvis-tab.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+/* Tab content */
+.jarvis-content {
+  padding: 20px 22px;
+  min-height: 340px;
+}
+.jarvis-tab-pane { display: none; }
+.jarvis-tab-pane.active { display: block; }
+
+/* Locked overlay */
+.jarvis-locked {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,11,13,0.92);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  backdrop-filter: blur(3px);
+}
+.jarvis-locked .lock-icon {
+  font-size: 32px;
+  color: var(--gold);
+  opacity: 0.6;
+}
+.jarvis-locked .lock-text {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--text-dim);
+  text-align: center;
+  line-height: 1.8;
+}
+.jarvis-locked .lock-login-btn {
+  padding: 10px 24px;
+  background: transparent;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-sm);
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.jarvis-locked .lock-login-btn:hover {
+  background: var(--gold-dim);
+  box-shadow: 0 0 20px rgba(201,168,76,0.15);
+}
+
+/* JARVIS internal sections */
+.jarvis-section {
+  margin-bottom: 18px;
+}
+.jarvis-section-title {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.jarvis-section-title::before {
+  content: '▸';
+  color: var(--gold);
+}
+
+/* Triage cards */
+.triage-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 12px;
+}
+.triage-severity {
+  width: 4px;
+  min-height: 40px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.triage-severity.critical { background: var(--severity-critical); }
+.triage-severity.high { background: var(--severity-high); }
+.triage-severity.medium { background: var(--severity-medium); }
+.triage-severity.low { background: var(--severity-low); }
+.triage-info { flex: 1; }
+.triage-type { font-family: var(--font-mono); font-size: 11px; color: var(--text); font-weight: 500; }
+.triage-location { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); margin-top: 3px; }
+.triage-reason { font-family: var(--font-sans); font-size: 11px; color: var(--text-muted); margin-top: 5px; line-height: 1.5; }
+
+/* Dispatch suggestions */
+.dispatch-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin-bottom: 8px;
+}
+.dispatch-card .team-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--teal);
+  font-weight: 500;
+}
+.dispatch-card .team-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.dispatch-card .team-eta {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.dispatch-card .team-eta.fast { background: var(--teal-dim); color: var(--teal); }
+.dispatch-card .team-eta.moderate { background: var(--amber-dim); color: var(--amber); }
+.dispatch-card .team-eta.slow { background: var(--red-dim); color: var(--red); }
+
+/* Brief tab */
+.brief-summary {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+.brief-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.brief-fact {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+.brief-fact-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+}
+.brief-fact-value {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text);
+  margin-top: 4px;
+}
+
+/* Predict tab */
+.predict-chart {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.predict-chart canvas { width: 100% !important; height: 160px !important; }
+.predict-risk {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.predict-risk-item {
+  flex: 1;
+  min-width: 120px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+.predict-risk-item .risk-county {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text);
+}
+.predict-risk-item .risk-level {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 4px;
+}
+.predict-risk-item .risk-level.elevated { color: var(--amber); }
+.predict-risk-item .risk-level.high { color: var(--red); }
+.predict-risk-item .risk-level.moderate { color: var(--blue); }
+
+/* Chat tab */
+.chat-messages {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+.chat-msg {
+  margin-bottom: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.chat-msg .msg-role {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 3px;
+}
+.chat-msg .msg-role.system { color: var(--gold); }
+.chat-msg .msg-role.user { color: var(--teal); }
+.chat-msg .msg-role.assistant { color: var(--amber); }
+.chat-msg .msg-text {
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+}
+.chat-turn-info {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  text-align: right;
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+}
+.chat-input-row input {
+  flex: 1;
+  padding: 9px 12px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  outline: none;
+}
+.chat-input-row input:focus { border-color: var(--gold); }
+.chat-input-row .chat-send {
+  padding: 9px 16px;
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-sm);
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.chat-input-row .chat-send:hover {
+  background: rgba(201,168,76,0.2);
+}
+.chat-input-row .chat-send:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* JARVIS run button (shared across tabs) */
+.jarvis-run-btn {
+  padding: 8px 18px;
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-sm);
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.jarvis-run-btn:hover {
+  background: rgba(201,168,76,0.2);
+  box-shadow: 0 0 16px rgba(201,168,76,0.12);
+}
+.jarvis-run-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.jarvis-loading {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+}
+.jarvis-loading::after {
+  content: '';
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid var(--gold-border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -1,0 +1,66 @@
+/* === FOOTER === */
+.site-footer {
+  margin-top: 40px;
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.footer-brand .footer-logo-mark {
+  width: 22px; height: 22px;
+  background: var(--red-dim);
+  border: 1.5px solid var(--red);
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--red);
+}
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+.footer-link {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+.footer-link:hover { color: var(--text-muted); }
+.footer-right {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.footer-api-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.footer-api-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--teal);
+}
+.footer-api-dot.offline { background: var(--red); }
+.footer-api-dot.degraded { background: var(--amber); animation: blink 1.5s infinite; }

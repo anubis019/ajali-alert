@@ -1,0 +1,76 @@
+/* === FILTERS BAR === */
+.filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.filters-bar .filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.filter-select {
+  padding: 7px 28px 7px 10px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='%235a5d65'%3E%3Cpath d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: border-color var(--transition);
+}
+.filter-select:focus { border-color: var(--gold); outline: none; }
+.filter-select option { background: var(--bg-card); color: var(--text); }
+
+.severity-pills {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.severity-pill {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: all var(--transition);
+  background: transparent;
+  color: var(--text-muted);
+}
+.severity-pill:hover { border-color: var(--text-dim); }
+.severity-pill.active-critical { border-color: var(--severity-critical); color: var(--severity-critical); background: var(--red-dim); }
+.severity-pill.active-high { border-color: var(--severity-high); color: var(--severity-high); background: var(--amber-dim); }
+.severity-pill.active-medium { border-color: var(--severity-medium); color: var(--severity-medium); background: var(--blue-dim); }
+.severity-pill.active-low { border-color: var(--severity-low); color: var(--severity-low); background: var(--teal-dim); }
+
+.filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px 3px 10px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.filter-tag .tag-remove {
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 12px;
+  transition: color var(--transition);
+}
+.filter-tag .tag-remove:hover { color: var(--red); }

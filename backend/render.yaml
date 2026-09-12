@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: ajali-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: AJALI_SECRET_KEY
+        sync: false          # set manually in Render dashboard
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:////opt/render/project/src/ajali.db
+      - key: CORS_ORIGINS
+        value: http://localhost:3000,http://localhost:8000,https://ajali-alert.vercel.app
+      - key: PYTHON_VERSION
+        value: "3.11.9"

@@ -1,66 +1,345 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajali Alert System — JARVIS Enhanced</title>
+  <meta name="description" content="Kenya Emergency Alert System with JARVIS AI — Real-time incident monitoring, AI triage, dispatch suggestions, predictive alerts, and USSD emergency chat.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚨</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/login.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/filters.css">
+  <link rel="stylesheet" href="css/metrics.css">
+  <link rel="stylesheet" href="css/jarvis.css">
+  <link rel="stylesheet" href="css/charts.css">
+  <link rel="stylesheet" href="css/feed.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/teams.css">
+  <link rel="stylesheet" href="css/toast.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
 
-    <!-- Theme / PWA -->
-    <meta name="theme-color" content="#071015" />
-    <meta name="color-scheme" content="dark" />
-
-    <!-- Primary meta -->
-    <title>Ajali Alert | Emergency Response</title>
-    <meta
-      name="description"
-      content="Report emergencies in seconds. Ajali Alert routes your report to the nearest responders — police, ambulance, fire — with GPS-precise location."
-    />
-
-    <!-- Open Graph / link previews (WhatsApp, Twitter, Facebook) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Ajali Alert | Emergency Response" />
-    <meta
-      property="og:description"
-      content="Report emergencies in seconds. GPS-precise. Works on any phone."
-    />
-    <meta property="og:locale" content="en_KE" />
-    <!-- <meta property="og:url" content="https://ajali-alert.vercel.app/" /> -->
-    <!-- <meta property="og:image" content="/og-image.png" /> -->
-
-    <!-- Twitter card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Ajali Alert | Emergency Response" />
-    <meta
-      name="twitter:description"
-      content="Report emergencies in seconds. GPS-precise. Works on any phone."
-    />
-
-    <!-- Favicon (drop these in /public) -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-
-    <!-- Preconnect to API host — saves 100–300ms on first request -->
-    <link rel="preconnect" href="https://ajali-alert.onrender.com" crossorigin />
-    <link rel="dns-prefetch" href="https://ajali-alert.onrender.com" />
-
-    <!-- Preconnect to Google Fonts (used by styles.css @import) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  </head>
-
-  <body>
-    <!-- Screen-reader-only skip link -->
-    <a href="#root" class="skip-link">Skip to main content</a>
-
-    <div id="root"></div>
-    <noscript>
-      <div style="padding: 24px; font-family: system-ui, sans-serif; color: #edf3f8; background: #071015; min-height: 100vh;">
-        <h1 style="margin: 0 0 12px;">Ajali Alert</h1>
-        <p>This app requires JavaScript to work. Please enable JavaScript or use the USSD service by dialing <strong>*1233#</strong>.</p>
-        <p>If you are in immediate danger, call <a href="tel:999" style="color: #72a9ff;">999</a>.</p>
+  <!-- LOGIN MODAL (admin only) -->
+  <div class="login-overlay" id="login-overlay">
+    <div class="login-box">
+      <div class="login-box-header">
+        <div class="login-logo">
+          <div class="logo-mark">!</div>
+          <div>
+            <div class="login-title">JARVIS Admin Access</div>
+            <div class="login-subtitle">Unlock AI-powered features</div>
+          </div>
+        </div>
+        <button class="login-close" title="Continue as guest">×</button>
       </div>
-    </noscript>
+      <form id="login-form">
+        <div class="api-base-group">
+          <label class="form-label">API Base URL</label>
+          <input type="text" class="form-input" id="login-api-base" value="https://ajali-alert.onrender.com" placeholder="https://your-api.onrender.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Admin Username</label>
+          <input type="text" class="form-input" id="login-username" placeholder="admin" autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="login-password" placeholder="••••••" autocomplete="current-password">
+        </div>
+        <button type="submit" class="login-btn">Authenticate</button>
+      </form>
+      <div class="login-error"></div>
+      <div class="login-hint">Admin only · Default: admin / admin1234</div>
+    </div>
+  </div>
 
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ALERT DETAIL MODAL -->
+  <div class="modal-overlay" id="alert-modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Alert Details</div>
+        <button class="modal-close">×</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN DASHBOARD -->
+  <div class="dashboard">
+
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="logo-group">
+        <div class="logo-mark">!</div>
+        <div>
+          <h1><span>Ajali</span> Alert System</h1>
+          <div class="logo-tagline">JARVIS Enhanced · Kenya Emergency Command</div>
+        </div>
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          SYSTEM ONLINE
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="admin-btn" id="admin-btn">Admin</button>
+        <button class="logout-btn" id="logout-btn" style="display:none">Logout</button>
+      </div>
+    </header>
+
+    <!-- FILTER BAR -->
+    <nav class="filters-bar">
+      <div class="filter-group">
+        <label class="form-label">County</label>
+        <select class="filter-select" id="county-filter">
+          <option value="all">All Counties</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="form-label">Severity</label>
+        <div class="severity-pills">
+          <button class="severity-pill" data-severity="critical">Critical</button>
+          <button class="severity-pill" data-severity="high">High</button>
+          <button class="severity-pill" data-severity="medium">Medium</button>
+          <button class="severity-pill" data-severity="low">Low</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO METRICS -->
+    <section class="metrics-grid">
+      <div class="metric-card severity-critical">
+        <div class="metric-label"><span class="metric-icon">🚨</span> Active Alerts</div>
+        <div class="metric-value">--</div>
+        <div class="metric-sub">
+          <span class="metric-trend up">+12%</span>
+          <span>vs last hour</span>
+        </div>
+      </div>
+      <div class="metric-card severity-high">
+        <div class="metric-label"><span class="metric-icon">⚡</span> Critical Events</div>
+        <div class="metric-value">--</div>
+        <div class="metric-sub">
+          <span class="metric-trend up">+3</span>
+          <span>since midnight</span>
+        </div>
+      </div>
+      <div class="metric-card severity-medium">
+        <div class="metric-label"><span class="metric-icon">📡</span> Responding Now</div>
+        <div class="metric-value">--</div>
+        <div class="metric-sub">
+          <span class="metric-trend stable">—</span>
+          <span>teams deployed</span>
+        </div>
+      </div>
+      <div class="metric-card severity-low">
+        <div class="metric-label"><span class="metric-icon">⏱</span> Golden Hour</div>
+        <div class="metric-value">--</div>
+        <div class="metric-sub">
+          <span class="metric-trend down">within window</span>
+          <span>critical alerts</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- JARVIS AI PANEL -->
+    <section class="jarvis-panel">
+      <div class="jarvis-header">
+        <div class="jarvis-brand">
+          <div class="jarvis-logo">J</div>
+          <div>
+            <div class="jarvis-title">JARVIS AI</div>
+            <div class="jarvis-status"><span class="status-dot"></span> LOCKED</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JARVIS LOCKED OVERLAY (guest mode) -->
+      <div class="jarvis-locked" id="jarvis-locked">
+        <div class="lock-icon">🔒</div>
+        <div class="lock-text">
+          JARVIS AI — Admin Only<br>
+          Triage · Dispatch · Brief · Predict · USSD Chat<br>
+          require admin authentication
+        </div>
+        <button class="lock-login-btn">Admin Login</button>
+      </div>
+
+      <!-- JARVIS TABS -->
+      <div class="jarvis-tabs">
+        <button class="jarvis-tab active" data-tab="triage">Triage</button>
+        <button class="jarvis-tab" data-tab="dispatch">Dispatch</button>
+        <button class="jarvis-tab" data-tab="brief">Brief</button>
+        <button class="jarvis-tab" data-tab="predict">Predict</button>
+        <button class="jarvis-tab" data-tab="chat">USSD Chat</button>
+      </div>
+
+      <!-- JARVIS CONTENT -->
+      <div class="jarvis-content">
+
+        <!-- TRIAGE -->
+        <div class="jarvis-tab-pane active" id="jarvis-triage">
+          <div class="jarvis-section">
+            <div class="jarvis-section-title">AI-Powered Alert Triage</div>
+            <button class="jarvis-run-btn" id="jarvis-triage-btn">▶ Run Triage Analysis</button>
+          </div>
+          <div class="triage-results">
+            <div class="jarvis-loading">Awaiting analysis</div>
+          </div>
+        </div>
+
+        <!-- DISPATCH -->
+        <div class="jarvis-tab-pane" id="jarvis-dispatch">
+          <div class="jarvis-section">
+            <div class="jarvis-section-title">Optimal Dispatch Suggestions</div>
+            <button class="jarvis-run-btn" id="jarvis-dispatch-btn">▶ Get Dispatch Plan</button>
+          </div>
+          <div class="dispatch-results">
+            <div class="jarvis-loading">Awaiting dispatch query</div>
+          </div>
+        </div>
+
+        <!-- BRIEF -->
+        <div class="jarvis-tab-pane" id="jarvis-brief">
+          <div class="jarvis-section">
+            <div class="jarvis-section-title">Situational Intelligence Brief</div>
+            <button class="jarvis-run-btn" id="jarvis-brief-btn">▶ Generate Brief</button>
+          </div>
+          <div class="brief-results">
+            <div class="jarvis-loading">Awaiting brief request</div>
+          </div>
+        </div>
+
+        <!-- PREDICT -->
+        <div class="jarvis-tab-pane" id="jarvis-predict">
+          <div class="jarvis-section">
+            <div class="jarvis-section-title">Predictive Risk Analysis</div>
+            <button class="jarvis-run-btn" id="jarvis-predict-btn">▶ Refresh Predictions</button>
+          </div>
+          <div class="predict-chart">
+            <canvas id="predict-canvas"></canvas>
+          </div>
+          <div class="predict-risk">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- CHAT -->
+        <div class="jarvis-tab-pane" id="jarvis-chat">
+          <div class="jarvis-section">
+            <div class="jarvis-section-title">USSD Emergency Chat · <span style="color:var(--gold)">*1233#</span></div>
+          </div>
+          <div class="chat-messages">
+            <div class="chat-msg">
+              <div class="msg-role system">SYSTEM</div>
+              <div class="msg-text">USSD session ready. Type your emergency or reply with a number.</div>
+            </div>
+          </div>
+          <div class="chat-turn-info">Turn 0/12</div>
+          <div class="chat-input-row">
+            <input type="text" maxlength="160" placeholder="Type your message...">
+            <button class="chat-send">Send</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MAIN GRID: CHARTS -->
+    <section class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-title">Alert Volume Trend (24h)</div>
+        <canvas id="chart-timeline"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Severity Distribution</div>
+        <canvas id="chart-severity"></canvas>
+      </div>
+    </section>
+
+    <!-- LIVE ALERT FEED -->
+    <section class="alert-feed">
+      <div class="feed-header">
+        <div class="feed-title">
+          Live Alert Feed <span class="feed-count">0</span>
+        </div>
+        <div class="feed-live">
+          <span class="live-dot"></span> Streaming
+        </div>
+      </div>
+      <div class="feed-list">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
+
+    <!-- COUNTY BAR CHART -->
+    <section class="charts-grid" style="margin-top:20px">
+      <div class="chart-card">
+        <div class="chart-title">Alerts by County</div>
+        <canvas id="chart-county"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Alerts by Category</div>
+        <canvas id="chart-category"></canvas>
+      </div>
+    </section>
+
+    <!-- RESPONSE TEAMS -->
+    <section class="teams-grid">
+      <!-- Populated dynamically -->
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <div class="footer-logo-mark">!</div>
+        Ajali Alert System · JARVIS Neural Engine
+      </div>
+      <div class="footer-links">
+        <a href="#" class="footer-link">Documentation</a>
+        <a href="#" class="footer-link">API Status</a>
+        <a href="#" class="footer-link">Support</a>
+      </div>
+      <div class="footer-right">
+        <div class="footer-api-status">
+          <span class="footer-api-dot"></span>
+          <span>API</span>
+        </div>
+        <span>© 2026 Ajali Systems · Kenya</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/jarvis.js"></script>
+  <script src="js/triage.js"></script>
+  <script src="js/dispatch.js"></script>
+  <script src="js/brief.js"></script>
+  <script src="js/predict.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/feed.js"></script>
+  <script src="js/teams.js"></script>
+  <script src="js/simulation.js"></script>
+  <script src="js/app.js"></script>
+</body>
 </html>

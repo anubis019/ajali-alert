@@ -1,0 +1,44 @@
+/* === RESPONSIVE === */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .charts-grid { grid-template-columns: 1fr; }
+  .teams-grid { grid-template-columns: repeat(2, 1fr); }
+  .dashboard { padding: 16px 20px; }
+  .modal { max-width: 560px; }
+  .brief-facts { grid-template-columns: 1fr; }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .metrics-grid { grid-template-columns: 1fr; }
+  .teams-grid { grid-template-columns: 1fr; }
+  .dashboard { padding: 12px 14px; }
+  .site-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+  .header-right { width: 100%; justify-content: flex-end; }
+  .filters-bar { flex-direction: column; align-items: flex-start; }
+  .severity-pills { flex-wrap: wrap; }
+  .modal { max-width: calc(100vw - 24px); max-height: 90vh; }
+  .modal-meta-grid { grid-template-columns: 1fr; }
+  .login-box { max-width: calc(100vw - 32px); }
+  .jarvis-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .jarvis-content { padding: 16px; }
+  .predict-risk { flex-direction: column; }
+  .site-footer { flex-direction: column; align-items: center; text-align: center; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+}
+
+/* Small mobile */
+@media (max-width: 400px) {
+  .metric-value { font-size: 28px; }
+  .jarvis-title { font-size: 12px; letter-spacing: 2px; }
+}
+
+/* Print (hide interactive elements) */
+@media print {
+  .jarvis-panel, .filters-bar, .login-overlay, .modal-overlay, .toast-container, .site-header .header-right { display: none !important; }
+  body::before, body::after { display: none; }
+  .dashboard { max-width: 100%; padding: 0; }
+  .metric-card, .chart-card, .alert-feed, .response-card { box-shadow: none; border: 1px solid #ccc; }
+}

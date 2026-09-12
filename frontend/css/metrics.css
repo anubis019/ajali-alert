@@ -1,0 +1,78 @@
+/* === METRICS CARDS === */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.metric-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition), transform 0.2s;
+}
+.metric-card:hover { border-color: var(--text-dim); transform: translateY(-1px); }
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.metric-card.severity-critical::before { background: var(--severity-critical); }
+.metric-card.severity-high::before { background: var(--severity-high); }
+.metric-card.severity-medium::before { background: var(--severity-medium); }
+.metric-card.severity-low::before { background: var(--severity-low); }
+
+.metric-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.metric-label .metric-icon { font-size: 12px; }
+
+.metric-value {
+  font-size: 36px;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  line-height: 1;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.metric-card.severity-critical .metric-value { color: var(--severity-critical); }
+.metric-card.severity-high .metric-value { color: var(--severity-high); }
+.metric-card.severity-medium .metric-value { color: var(--severity-medium); }
+.metric-card.severity-low .metric-value { color: var(--severity-low); }
+
+.metric-sub {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+}
+.metric-trend {
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.metric-trend.up { color: var(--red); background: var(--red-dim); }
+.metric-trend.down { color: var(--teal); background: var(--teal-dim); }
+.metric-trend.stable { color: var(--text-dim); background: var(--bg); }
+
+.metric-sparkline {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 30px;
+  opacity: 0.25;
+}

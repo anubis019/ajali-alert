@@ -1,0 +1,64 @@
+/* === DESIGN TOKENS === */
+:root {
+  /* Backgrounds */
+  --bg-deep: #0a0b0d;
+  --bg: #12141a;
+  --bg-card: #181b21;
+  --bg-card-hover: #1e2028;
+  --bg-input: #14161c;
+  
+  /* Borders */
+  --border: #2a2d35;
+  --border-subtle: #1e2028;
+  
+  /* Text */
+  --text: #e8e6e1;
+  --text-muted: #a0a3ab;
+  --text-dim: #5a5d65;
+  
+  /* Accent Palette */
+  --amber: #e09f3e;
+  --amber-dim: #3d2e12;
+  --amber-glow: rgba(224,159,62,0.08);
+  
+  --red: #d64a4a;
+  --red-dim: #3d1a1a;
+  --red-glow: rgba(214,74,74,0.08);
+  
+  --teal: #3db8a0;
+  --teal-dim: #153d36;
+  --teal-glow: rgba(61,184,160,0.08);
+  
+  --blue: #4a8fd6;
+  --blue-dim: #162a3d;
+  --blue-glow: rgba(74,143,214,0.08);
+  
+  --purple: #8b6cc1;
+  --purple-dim: #2a2240;
+  --purple-glow: rgba(139,108,193,0.08);
+  
+  --gold: #c9a84c;
+  --gold-dim: #2e2510;
+  --gold-glow: rgba(201,168,76,0.12);
+  --gold-border: #c9a84c;
+  
+  /* Severity */
+  --severity-critical: #d64a4a;
+  --severity-high: #e09f3e;
+  --severity-medium: #4a8fd6;
+  --severity-low: #3db8a0;
+  
+  /* Layout */
+  --radius: 8px;
+  --radius-sm: 4px;
+  --radius-lg: 12px;
+  --transition: 0.3s ease;
+  
+  /* Typography */
+  --font-mono: 'DM Mono', monospace;
+  --font-sans: 'Instrument Sans', system-ui, sans-serif;
+  
+  /* Shadows */
+  --shadow-card: 0 4px 20px rgba(0,0,0,0.3);
+  --shadow-modal: 0 8px 40px rgba(0,0,0,0.5);
+}

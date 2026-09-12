@@ -1,0 +1,97 @@
+/* === HEADER === */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.site-header .logo-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.site-header .logo-group h1 {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -1px;
+  color: var(--text);
+}
+.site-header .logo-group h1 span {
+  color: var(--red);
+}
+.site-header .logo-tagline {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  margin-top: -2px;
+}
+.site-header .status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--teal);
+  margin-left: 24px;
+}
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  animation: blink 1.5s infinite;
+}
+@keyframes blink {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.admin-btn {
+  padding: 7px 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex; align-items: center; gap: 6px;
+}
+.admin-btn:hover { border-color: var(--gold); color: var(--gold); }
+.admin-btn.authenticated {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+.admin-btn .auth-check {
+  color: var(--teal);
+  font-size: 14px;
+}
+
+.logout-btn {
+  padding: 7px 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.logout-btn:hover { border-color: var(--red); color: var(--red); }
