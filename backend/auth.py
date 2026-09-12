@@ -2,6 +2,11 @@ import base64
 import hashlib
 import hmac
 import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from datetime import datetime, timedelta
 from typing import Callable
 
