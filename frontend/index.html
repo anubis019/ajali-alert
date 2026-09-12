@@ -2,12 +2,65 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- Theme / PWA -->
     <meta name="theme-color" content="#071015" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- Primary meta -->
     <title>Ajali Alert | Emergency Response</title>
+    <meta
+      name="description"
+      content="Report emergencies in seconds. Ajali Alert routes your report to the nearest responders — police, ambulance, fire — with GPS-precise location."
+    />
+
+    <!-- Open Graph / link previews (WhatsApp, Twitter, Facebook) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Ajali Alert | Emergency Response" />
+    <meta
+      property="og:description"
+      content="Report emergencies in seconds. GPS-precise. Works on any phone."
+    />
+    <meta property="og:locale" content="en_KE" />
+    <!-- <meta property="og:url" content="https://ajali-alert.vercel.app/" /> -->
+    <!-- <meta property="og:image" content="/og-image.png" /> -->
+
+    <!-- Twitter card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ajali Alert | Emergency Response" />
+    <meta
+      name="twitter:description"
+      content="Report emergencies in seconds. GPS-precise. Works on any phone."
+    />
+
+    <!-- Favicon (drop these in /public) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Preconnect to API host — saves 100–300ms on first request -->
+    <link rel="preconnect" href="https://ajali-alert.onrender.com" crossorigin />
+    <link rel="dns-prefetch" href="https://ajali-alert.onrender.com" />
+
+    <!-- Preconnect to Google Fonts (used by styles.css @import) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
+
   <body>
+    <!-- Screen-reader-only skip link -->
+    <a href="#root" class="skip-link">Skip to main content</a>
+
     <div id="root"></div>
+    <noscript>
+      <div style="padding: 24px; font-family: system-ui, sans-serif; color: #edf3f8; background: #071015; min-height: 100vh;">
+        <h1 style="margin: 0 0 12px;">Ajali Alert</h1>
+        <p>This app requires JavaScript to work. Please enable JavaScript or use the USSD service by dialing <strong>*1233#</strong>.</p>
+        <p>If you are in immediate danger, call <a href="tel:999" style="color: #72a9ff;">999</a>.</p>
+      </div>
+    </noscript>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
